@@ -13,7 +13,7 @@ Dangerous Permissions：
     permission:android.permission.WRITE_CONTACTS;
     permission:android.permission.GET_ACCOUNTS;  
     permission:android.permission.READ_CONTACTS;
-      
+  
 2.通话类
 
     permission:android.permission.READ_CALL_LOG;
@@ -23,7 +23,7 @@ Dangerous Permissions：
     permission:android.permission.USE_SIP;
     permission:android.permission.PROCESS_OUTGOING_CALLS;
     permission:com.android.voicemail.permission.ADD_VOICEMAIL;
-           
+ 
 3.日历类
 
     permission:android.permission.READ_CALENDAR;
@@ -60,8 +60,6 @@ Dangerous Permissions：
     permission:android.permission.SEND_SMS;
     permission:android.permission.READ_CELL_BROADCASTS;
 
-
-
 关键代码：
 
 1.检查手机版本
@@ -71,7 +69,6 @@ Dangerous Permissions：
 2.要用的权限是否有（以相机权限为例）
 
     ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-
 
 3.申请权限（权限以数组的形式）
 
