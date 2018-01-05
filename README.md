@@ -10,27 +10,26 @@ Dangerous Permissions：
 -------------------------
 1.联系人
 
-`  permission:android.permission.WRITE_CONTACTS;
-     permission:android.permission.GET_ACCOUNTS;  
-     permission:android.permission.READ_CONTACTS;`
+    permission:android.permission.WRITE_CONTACTS;
+    permission:android.permission.GET_ACCOUNTS;  
+    permission:android.permission.READ_CONTACTS;
      
-   
+ 
 2.通话类
 
-`    permission:android.permission.READ_CALL_LOG;
-     permission:android.permission.READ_PHONE_STATE;
-     permission:android.permission.CALL_PHONE;
-     permission:android.permission.WRITE_CALL_LOG;
-     permission:android.permission.USE_SIP;
-     permission:android.permission.PROCESS_OUTGOING_CALLS;
-     permission:com.android.voicemail.permission.ADD_VOICEMAIL;`
-     
-    
+    permission:android.permission.READ_CALL_LOG;
+    permission:android.permission.READ_PHONE_STATE;
+    permission:android.permission.CALL_PHONE;
+    permission:android.permission.WRITE_CALL_LOG;
+    permission:android.permission.USE_SIP;
+    permission:android.permission.PROCESS_OUTGOING_CALLS;
+    permission:com.android.voicemail.permission.ADD_VOICEMAIL;
+       
     
 3.日历类
 
-     permission:android.permission.READ_CALENDAR;
-     permission:android.permission.WRITE_CALENDAR;
+    permission:android.permission.READ_CALENDAR;
+    permission:android.permission.WRITE_CALENDAR;
     
 4.相机
 
@@ -68,41 +67,36 @@ Dangerous Permissions：
 关键代码：
 
 1.检查手机版本
-```
-android.os.Build.VERSION.SDK_INT >= M
-```
+
+    android.os.Build.VERSION.SDK_INT >= M
 
 2.要用的权限是否有（以相机权限为例）
 
-```
-ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-```
+    ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+
 
 3.申请权限（权限以数组的形式）
-```
-ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE);
-```
+
+    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE);
 
 4.重写方法onRequestPermissionsResult
 
-```
-@Override
-
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    @Override
     
-        if (requestCode == REQUEST_PERMISSION_CODE) {
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {//用户拒绝了
+            if (requestCode == REQUEST_PERMISSION_CODE) {
             
-                Toast.makeText(this, "获取相机权限失败!", Toast.LENGTH_SHORT).show();
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {//用户拒绝了
                 
-            }  else {        
-                //获取到权限了，做下一步动作
-                
-                    }   
-        }  
-    }
-    ```
-    
+                    Toast.makeText(this, "获取相机权限失败!", Toast.LENGTH_SHORT).show();
+                    
+                }  else {        
+                    //获取到权限了，做下一步动作
+                    
+                        }   
+            }  
+        }
+
 <br/>(此Demo是记录自己工作中的一些问题，如发现错误的地方请指教，谢谢! 
 --（TangAnna QQ:1101870076）) 
