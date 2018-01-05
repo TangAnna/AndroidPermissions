@@ -13,8 +13,7 @@ Dangerous Permissions：
     permission:android.permission.WRITE_CONTACTS;
     permission:android.permission.GET_ACCOUNTS;  
     permission:android.permission.READ_CONTACTS;
-     
- 
+      
 2.通话类
 
     permission:android.permission.READ_CALL_LOG;
@@ -24,8 +23,7 @@ Dangerous Permissions：
     permission:android.permission.USE_SIP;
     permission:android.permission.PROCESS_OUTGOING_CALLS;
     permission:com.android.voicemail.permission.ADD_VOICEMAIL;
-       
-    
+           
 3.日历类
 
     permission:android.permission.READ_CALENDAR;
