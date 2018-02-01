@@ -8,9 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.os.Build.VERSION_CODES.M;
 
@@ -46,15 +50,18 @@ public class MainActivity extends AppCompatActivity {
     public void requestPermission() {
         if (android.os.Build.VERSION.SDK_INT >= M) {//判断SDK版本号是否大于等于23
             //判断想要用到的权限是否授权   GRANTED：授权
-            if (ContextCompat.checkSelfPermission(this, mPermissions[0]) != PackageManager.PERMISSION_GRANTED) {
-                //动态申请权限
-                ActivityCompat.requestPermissions(this, mPermissions, REQUEST_PERMISSION_CODE);
-            } else if (ContextCompat.checkSelfPermission(this, mPermissions[1]) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, mPermissions, REQUEST_PERMISSION_CODE);
-            } else if (ContextCompat.checkSelfPermission(this, mPermissions[2]) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, mPermissions, REQUEST_PERMISSION_CODE);
-            } else {
+            //拥有的权限不能再次进行请求，否则会导致崩溃，这里去除已经拥有的权限
+            List<String> requestPermission = new ArrayList<>();//未拥有的权限
+            for (int i = 0; i < mPermissions.length; i++) {
+                if (ContextCompat.checkSelfPermission(this, mPermissions[i]) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermission.add(mPermissions[i]);
+                }
+            }
+            if (requestPermission.size() == 0) {
                 next();
+            } else {
+                String[] request = requestPermission.toArray(new String[requestPermission.size()]);
+                ActivityCompat.requestPermissions(this, request, REQUEST_PERMISSION_CODE);
             }
         } else {
             next();
@@ -72,15 +79,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_PERMISSION_CODE) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {//用户拒绝了
-                Toast.makeText(this, "获取相机权限失败!", Toast.LENGTH_SHORT).show();
-            } else if (grantResults[1] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "获取生意权限失败!", Toast.LENGTH_SHORT).show();
-            } else if (grantResults[2] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "获取SDCard写入权限失败!", Toast.LENGTH_SHORT).show();
-            } else {
-                next();
+            int count = 0;
+            if (grantResults != null && grantResults.length > 0) {
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        count++;
+                    }
+                }
+                if (count == 0) {
+                    next();
+                } else {
+                    Toast.makeText(this, "需要录音和摄像头权限，请到【设置】【应用】打开", Toast.LENGTH_SHORT).show();
+                }
             }
+            Log.d("TAG", "===拒绝的权限大小onRequestPermissionsResult: " + count);
         }
     }
 
