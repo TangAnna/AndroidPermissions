@@ -73,6 +73,7 @@ Dangerous Permissions：
 3.申请权限（权限以数组的形式）
 
     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE);
+    //数组中不能有已经获得的权限，不然直接崩溃
 
 4.重写方法onRequestPermissionsResult
 
@@ -81,15 +82,20 @@ Dangerous Permissions：
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         
             if (requestCode == REQUEST_PERMISSION_CODE) {
-            
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {//用户拒绝了
+            int count = 0;
+                        if (grantResults != null && grantResults.length > 0) {
+                            for (int i = 0; i < grantResults.length; i++) {
+                                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                                    count++;
+                                }
+                            }
+                            if (count == 0) {
+                                next();
+                            } else {
+                                Toast.makeText(this, "需要录音和摄像头权限，请到【设置】【应用】打开", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                 
-                    Toast.makeText(this, "获取相机权限失败!", Toast.LENGTH_SHORT).show();
-                    
-                }  else {        
-                    //获取到权限了，做下一步动作
-                    
-                        }   
             }  
         }
 
