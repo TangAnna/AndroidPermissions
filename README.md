@@ -99,5 +99,4 @@ Dangerous Permissions：
             }  
         }
 
-<br/>(此Demo是记录自己工作中的一些问题，如发现错误的地方请指教，谢谢! 
---（TangAnna QQ:1101870076）) 
+
